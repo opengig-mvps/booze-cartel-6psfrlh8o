@@ -1,0 +1,120 @@
+{
+  "items": [
+    {
+      "url": "/page.tsx",
+      "type": "page",
+      "status": "success",
+      "access": "public",
+      "userType": "all"
+    },
+    {
+      "url": "/api/users/google",
+      "type": "api",
+      "status": "success",
+      "method": "POST"
+    },
+    {
+      "url": "/api/products",
+      "type": "api",
+      "status": "success",
+      "method": "GET"
+    },
+    {
+      "url": "/api/users/{userId}/cart",
+      "type": "api",
+      "status": "success",
+      "method": "GET"
+    },
+    {
+      "url": "/api/users/{userId}/cart/{productId}",
+      "type": "api",
+      "status": "success",
+      "method": "DELETE"
+    },
+    {
+      "url": "/api/payments/razorpay/create-order",
+      "type": "api",
+      "status": "success",
+      "method": "POST"
+    },
+    {
+      "url": "/api/payments/razorpay/verify",
+      "type": "api",
+      "status": "success",
+      "method": "POST"
+    },
+    {
+      "url": "/api/admin/orders",
+      "type": "api",
+      "status": "success",
+      "method": "GET"
+    },
+    {
+      "url": "/api/admin/orders/{orderId}",
+      "type": "api",
+      "status": "success",
+      "method": "PATCH"
+    },
+    {
+      "url": "/api/admin/reviews",
+      "type": "api",
+      "status": "success",
+      "method": "GET"
+    },
+    {
+      "url": "/api/admin/reviews/{reviewId}",
+      "type": "api",
+      "status": "success",
+      "method": "PATCH"
+    },
+    {
+      "url": "dashboard/user/productCatalog/page.tsx",
+      "type": "page",
+      "status": "success",
+      "userType": "user",
+      "access": "public"
+    },
+    {
+      "url": "dashboard/user/shoppingCart/page.tsx",
+      "type": "page",
+      "status": "success",
+      "userType": "user",
+      "access": "private"
+    },
+    {
+      "url": "dashboard/user/checkout/page.tsx",
+      "type": "page",
+      "status": "success",
+      "userType": "user",
+      "access": "private"
+    },
+    {
+      "url": "dashboard/admin/orderManagement/page.tsx",
+      "type": "page",
+      "status": "success",
+      "userType": "admin",
+      "access": "private"
+    },
+    {
+      "url": "dashboard/admin/reviewManagement/page.tsx",
+      "type": "page",
+      "status": "success",
+      "userType": "admin",
+      "access": "private"
+    },
+    {
+      "url": "/(auth)/register/page.tsx",
+      "type": "page",
+      "status": "success",
+      "access": "public",
+      "userType": "all"
+    },
+    {
+      "url": "/(auth)/login/page.tsx",
+      "type": "page",
+      "status": "success",
+      "access": "public",
+      "userType": "all"
+    }
+  ]
+}

@@ -1,71 +1,115 @@
 
-        generator client {
-          provider = "prisma-client-js"
-        }
+  generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  }
+  
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
         
-        datasource db {
-          provider = "postgresql"
-          url      = "postgresql://opengig:Database2024!@opengigmvp.postgres.database.azure.com:5432/hi2aa1a043?schema=public"
-        }
-      
 model User {
-    id          Int       @id @default(autoincrement())
-    email       String    @unique
-    password    String?
-    username    String
-    name        String?
-    role        String?   @default("user")
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
-    courses     Course[]  @relation("CourseTutor")
-    enrollments Enrollment[]
+  id               Int       @id @default(autoincrement())
+  email            String    @unique
+  password         String?
+  username         String    @unique
+  name             String?
+  role             String    @default("user")
+  isVerified       Boolean   @default(false)
+  verificationToken String?
+  OTP              String?
+  OTPExpiry        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  orders           Order[]
+  reviews          Review[]
+  cartItems        CartItem[]
+  payments         Payment[]
 }
 
-model Course {
-    id          Int        @id @default(autoincrement())
-    tutorId     Int
-    title       String
-    description String?
-    zoomLink    String?
-    price       Float
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
-    tutor       User       @relation("CourseTutor", fields: [tutorId], references: [id])
-    slots       CourseSlot[]
-    enrollments Enrollment[]
+model Product {
+  id               Int       @id @default(autoincrement())
+  name             String
+  description      String
+  price            Float
+  imageUrl         String
+  ingredients      String?
+  origin           String?
+  tastingNotes     String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  cartItems        CartItem[]
+  reviews          Review[]
+  orderItems       OrderItem[]
 }
 
-model CourseSlot {
-    id         Int      @id @default(autoincrement())
-    courseId   Int
-    startTime  DateTime
-    endTime    DateTime
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
-    course     Course   @relation(fields: [courseId], references: [id])
+model CartItem {
+  id               Int       @id @default(autoincrement())
+  quantity         Int
+  userId           Int
+  productId        Int
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id])
+  product          Product   @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
 }
 
-model Enrollment {
-    id            Int      @id @default(autoincrement())
-    studentId     Int
-    courseId      Int
-    enrollmentDate DateTime @default(now())
-    paymentStatus String
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    student       User     @relation(fields: [studentId], references: [id])
-    course        Course   @relation(fields: [courseId], references: [id])
-    payment       Payment?
+model Order {
+  id               Int       @id @default(autoincrement())
+  orderDate        DateTime  @default(now())
+  totalAmount      Float
+  status           String
+  userId           Int
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id])
+  orderItems       OrderItem[]
+  payments         Payment[]
+}
+
+model OrderItem {
+  id               Int       @id @default(autoincrement())
+  quantity         Int
+  productId        Int
+  orderId          Int
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  product          Product   @relation(fields: [productId], references: [id])
+  order            Order     @relation(fields: [orderId], references: [id])
 }
 
 model Payment {
-    id            Int      @id @default(autoincrement())
-    enrollmentId  Int      @unique
-    amount        Float
-    paymentMethod String
-    paymentDate   DateTime @default(now())
-    status        String
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+  id               Int       @id @default(autoincrement())
+  amount           Float
+  paymentStatus    String
+  paymentDate      DateTime  @default(now())
+  userId           Int
+  orderId          Int
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id])
+  order            Order     @relation(fields: [orderId], references: [id])
+}
+
+model Review {
+  id               Int       @id @default(autoincrement())
+  rating           Int
+  comment          String
+  status           String
+  userId           Int
+  productId        Int
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  user             User      @relation(fields: [userId], references: [id])
+  product          Product   @relation(fields: [productId], references: [id])
 }
