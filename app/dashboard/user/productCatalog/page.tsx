@@ -29,7 +29,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
-import { Loader } from "@/components/ui/loader"; // Assuming Loader is the correct component for loading
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const ProductCatalog: React.FC = () => {
@@ -125,7 +124,7 @@ const ProductCatalog: React.FC = () => {
 
       {loading ? (
         <div className="flex justify-center items-center">
-          <Loader className="h-6 w-6 animate-spin" />
+          Loading...
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
